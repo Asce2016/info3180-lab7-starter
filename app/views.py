@@ -32,7 +32,7 @@ def send_text_file(file_name):
     file_dot_text = file_name + '.txt'
     return app.send_static_file(file_dot_text)
 
-@app.route('/api/thumbnails', method = ['POST'])
+@app.route('/api/thumbnails', methods=["GET", "POST"])
 def thumnails():
      if request.method == 'POST':
         get_url = image_getter.url_list()
@@ -43,6 +43,12 @@ def thumnails():
         'thumbnails': get_url
         }
         return jsonify(links)
+        
+
+@app.route('/thumbnails/view')
+def thumbnails_view():
+    pics = image_getter.url_list()
+    return render_template('thumbnails.html', pics = pics)
 
 @app.after_request
 def add_header(response):
